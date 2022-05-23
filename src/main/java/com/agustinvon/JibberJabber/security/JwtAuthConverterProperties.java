@@ -9,7 +9,6 @@ import javax.validation.constraints.NotNull;
 @Component
 @ConfigurationProperties(prefix = "jwt.auth.converter")
 public class JwtAuthConverterProperties {
-    @NotBlank
     private String resourceId;
     private String principalAttribute;
 

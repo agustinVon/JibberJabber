@@ -24,9 +24,10 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http.authorizeRequests().anyRequest().authenticated();
-        http.oauth2ResourceServer()
-                .jwt()
-                .jwtAuthenticationConverter(jwtAuthConverter);
+        // REMOVE COMMENT WHEN FIXED
+        //http.oauth2ResourceServer()
+                //.jwt()
+                //.jwtAuthenticationConverter(jwtAuthConverter);
         http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
         http.cors().and().csrf().disable();
     }
