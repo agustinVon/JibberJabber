@@ -5,7 +5,6 @@ import com.agustinvon.JibberJabber.model.PostForm;
 import com.agustinvon.JibberJabber.repository.PostRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
 import java.time.LocalDateTime;
 import java.util.List;
 
