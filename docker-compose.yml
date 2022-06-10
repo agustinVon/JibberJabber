@@ -12,7 +12,7 @@ services:
       DB_USER: sa
       DB_PASSWORD: password
       DB_NAME: jibberjabber-db
-      DB_HOST: postgre-db
+      DB_HOST: db
       DB_PORT: 5432
 
   db:
