@@ -26,6 +26,8 @@ public class PostController {
         return ResponseEntity.ok(postCreated);
     }
 
+    //
+
     @GetMapping
     public List<Post> getAllPosts() {
         return postService.listAllPosts();
