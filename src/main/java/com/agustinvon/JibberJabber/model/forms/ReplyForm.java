@@ -1,16 +1,17 @@
-package com.agustinvon.JibberJabber.model;
+package com.agustinvon.JibberJabber.model.forms;
+
 import com.sun.istack.NotNull;
 
-public class PostForm {
+public class ReplyForm {
 
     @NotNull
     private String content;
 
-    public PostForm(String content) {
+    public ReplyForm(String content) {
         this.content = content;
     }
 
-    public PostForm() {
+    public ReplyForm() {
     }
 
     public void setContent(String content) {

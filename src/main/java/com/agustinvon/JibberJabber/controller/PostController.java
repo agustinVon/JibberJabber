@@ -1,20 +1,31 @@
 package com.agustinvon.JibberJabber.controller;
 
 import com.agustinvon.JibberJabber.model.Post;
-import com.agustinvon.JibberJabber.model.PostForm;
+import com.agustinvon.JibberJabber.model.dto.PostDTO;
+import com.agustinvon.JibberJabber.model.forms.PostForm;
+import com.agustinvon.JibberJabber.model.Reply;
+import com.agustinvon.JibberJabber.model.forms.ReplyForm;
 import com.agustinvon.JibberJabber.service.PostService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.client.RestTemplate;
 
 import java.security.Principal;
-import java.util.List;
+import java.util.Optional;
+import java.util.UUID;
 
 @RestController
-@RequestMapping("/post")
+@RequestMapping("/")
 public class PostController {
 
-    private PostService postService;
+    private final PostService postService;
+
+    @Value("followers.uri")
+    private String followersUri;
+
     @Autowired
     public PostController(PostService postService) {
         this.postService = postService;
@@ -27,7 +38,35 @@ public class PostController {
     }
 
     @GetMapping
-    public List<Post> getAllPosts() {
-        return postService.listAllPosts();
+    public Page<Post> getMyPosts(@RequestParam Optional<Integer> page, Principal principal) {
+        return postService.listPostsFromUser(principal.getName(), page.orElse(0));
+    }
+
+    @GetMapping("/{username}")
+    public Page<PostDTO> getPostsFromUser(@PathVariable String username, @RequestParam Optional<Integer> page) {
+        return postService.listPostsFromUser(username, page.orElse(0)).map(post -> new PostDTO(post.getContent(), post.getUsername(), post.getTimestamp()));
+    }
+
+    @GetMapping("/follows")
+    public ResponseEntity<String> getPostsFromFollowing() {
+        RestTemplate restTemplate = new RestTemplate();
+        String result = restTemplate.getForObject(followersUri, String.class);
+        System.out.println(result);
+        return ResponseEntity.ok("OK");
+    }
+
+    @GetMapping("/details/{postId}")
+    public Post getPostById(@PathVariable UUID postId) {
+        return postService.getPost(postId);
+    }
+
+    @DeleteMapping("/{postId}")
+    public Post deletePost(@PathVariable UUID postId) {
+        return postService.deletePost(postId);
+    }
+
+    @PostMapping("/{postId}/reply")
+    public Reply replyPost(@PathVariable UUID postId, @RequestBody ReplyForm replyForm, Principal principal) {
+        return postService.replyToPost(postId, replyForm, principal.getName());
     }
 }
