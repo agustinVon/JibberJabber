@@ -5,29 +5,32 @@ import com.agustinvon.JibberJabber.model.dto.PostDTO;
 import com.agustinvon.JibberJabber.model.forms.PostForm;
 import com.agustinvon.JibberJabber.model.Reply;
 import com.agustinvon.JibberJabber.model.forms.ReplyForm;
+import com.agustinvon.JibberJabber.model.responses.FollowResponse;
 import com.agustinvon.JibberJabber.service.PostService;
+import com.agustinvon.JibberJabber.service.RestService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.client.RestTemplate;
 
 import java.security.Principal;
+import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
 @RestController
-@RequestMapping("/")
+@RequestMapping("/post")
 public class PostController {
 
     private final PostService postService;
-
-    @Value("followers.uri")
+    private final RestService restService;
+    @Value("${followers.uri}")
     private String followersUri;
 
     @Autowired
-    public PostController(PostService postService) {
+    public PostController(PostService postService, RestService restService) {
+        this.restService = restService;
         this.postService = postService;
     }
 
@@ -48,11 +51,9 @@ public class PostController {
     }
 
     @GetMapping("/follows")
-    public ResponseEntity<String> getPostsFromFollowing() {
-        RestTemplate restTemplate = new RestTemplate();
-        String result = restTemplate.getForObject(followersUri, String.class);
-        System.out.println(result);
-        return ResponseEntity.ok("OK");
+    public List<Post> getPostsFromFollowing(@RequestHeader(value="Authorization") String authHeader , Principal principal) {
+        FollowResponse response = restService.getFollows(followersUri, authHeader);
+        return postService.getPostsFromUsers(response.getFollowList());
     }
 
     @GetMapping("/details/{postId}")

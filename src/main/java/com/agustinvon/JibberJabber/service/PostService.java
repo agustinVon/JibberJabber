@@ -5,6 +5,7 @@ import com.agustinvon.JibberJabber.model.Reply;
 import com.agustinvon.JibberJabber.model.dto.PostDTO;
 import com.agustinvon.JibberJabber.model.forms.PostForm;
 import com.agustinvon.JibberJabber.model.forms.ReplyForm;
+import com.agustinvon.JibberJabber.model.responses.Follow;
 import com.agustinvon.JibberJabber.repository.PostRepository;
 import com.agustinvon.JibberJabber.repository.ReplyRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -65,5 +66,13 @@ public class PostService {
         replies.add(reply);
         postToReply.setReplies(replies);
         return reply;
+    }
+
+    public List<Post> getPostsFromUsers(List<Follow> followList) {
+        List<Post> posts = new ArrayList<>();
+        followList.forEach(list -> {
+            posts.addAll(postRepository.findByUsername(list.getFollowedUser()));
+        });
+        return posts;
     }
 }

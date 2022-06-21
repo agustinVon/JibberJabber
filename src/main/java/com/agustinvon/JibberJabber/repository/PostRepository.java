@@ -14,4 +14,5 @@ import java.util.UUID;
 public interface PostRepository extends CrudRepository<Post, UUID> {
     List<Post> findAll();
     Page<Post> findByUsername(Pageable pageable,@Param("username") String username);
+    List<Post> findByUsername(@Param("username") String username);
 }
