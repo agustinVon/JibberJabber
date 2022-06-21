@@ -22,15 +22,19 @@ public class Post {
     private String username;
 
     @Column
+    private String userID;
+
+    @Column
     private LocalDateTime timestamp;
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "post", targetEntity = Reply.class)
     private List<Reply> replies = new ArrayList<>();
 
 
-    public Post(String content, String username, LocalDateTime timestamp) {
+    public Post(String content, String username, String userID, LocalDateTime timestamp) {
         this.content = content;
         this.username = username;
+        this.userID = userID;
         this.timestamp = timestamp;
     }
 
@@ -57,6 +61,10 @@ public class Post {
         return replies;
     }
 
+    public String getUserID() {
+        return userID;
+    }
+
     public void setContent(String content) {
         this.content = content;
     }
@@ -71,5 +79,9 @@ public class Post {
 
     public void setReplies(List<Reply> replies) {
         this.replies = replies;
+    }
+
+    public void setUserID(String userID) {
+        this.userID = userID;
     }
 }

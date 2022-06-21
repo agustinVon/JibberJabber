@@ -20,6 +20,9 @@ public class Reply {
     private String username;
 
     @Column
+    private String userID;
+
+    @Column
     private String content;
 
     @Column
@@ -30,8 +33,9 @@ public class Reply {
     @JsonIgnore
     private Post post;
 
-    public Reply(String username, String content, LocalDateTime dateTime, Post post) {
+    public Reply(String username, String userID, String content, LocalDateTime dateTime, Post post) {
         this.username = username;
+        this.userID = userID;
         this.content = content;
         this.dateTime = dateTime;
         this.post = post;
@@ -48,6 +52,10 @@ public class Reply {
         return username;
     }
 
+    public String getUserID() {
+        return userID;
+    }
+
     public String getContent() {
         return content;
     }
@@ -62,6 +70,10 @@ public class Reply {
 
     public void setUsername(String username) {
         this.username = username;
+    }
+
+    public void setUserID(String userID) {
+        this.userID = userID;
     }
 
     public void setContent(String content) {

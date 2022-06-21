@@ -2,7 +2,6 @@ package com.agustinvon.JibberJabber.service;
 
 import com.agustinvon.JibberJabber.model.Post;
 import com.agustinvon.JibberJabber.model.Reply;
-import com.agustinvon.JibberJabber.model.dto.PostDTO;
 import com.agustinvon.JibberJabber.model.forms.PostForm;
 import com.agustinvon.JibberJabber.model.forms.ReplyForm;
 import com.agustinvon.JibberJabber.model.responses.Follow;
@@ -34,7 +33,7 @@ public class PostService {
     }
 
     public Post createNewPost(PostForm postForm, String userName) {
-        Post postCreated = new Post(postForm.getContent(), userName, LocalDateTime.now());
+        Post postCreated = new Post(postForm.getContent(), postForm.getUsername(), userName, LocalDateTime.now());
         postRepository.save(postCreated);
         return postCreated;
     }
@@ -60,7 +59,7 @@ public class PostService {
 
     public Reply replyToPost(UUID postId, ReplyForm replyForm, String name) {
         Post postToReply = getPost(postId);
-        Reply reply = new Reply(name, replyForm.getContent(), LocalDateTime.now(), postToReply);
+        Reply reply = new Reply(replyForm.getUsername(), name, replyForm.getContent(), LocalDateTime.now(), postToReply);
         replyRepository.save(reply);
         List<Reply> replies = new ArrayList<>(postToReply.getReplies());
         replies.add(reply);

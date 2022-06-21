@@ -7,7 +7,10 @@ public class ReplyForm {
     @NotNull
     private String content;
 
-    public ReplyForm(String content) {
+    @NotNull private String username;
+
+    public ReplyForm(String content, String username) {
+        this.username = username;
         this.content = content;
     }
 
@@ -20,5 +23,9 @@ public class ReplyForm {
 
     public String getContent() {
         return content;
+    }
+
+    public String getUsername() {
+        return username;
     }
 }
