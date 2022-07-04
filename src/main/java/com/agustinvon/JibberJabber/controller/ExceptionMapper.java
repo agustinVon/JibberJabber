@@ -1,5 +1,6 @@
 package com.agustinvon.JibberJabber.controller;
 
+import com.agustinvon.JibberJabber.exceptions.NotYourPostException;
 import org.springframework.boot.web.error.ErrorAttributeOptions;
 import org.springframework.boot.web.servlet.error.DefaultErrorAttributes;
 import org.springframework.http.HttpHeaders;
@@ -23,5 +24,13 @@ public class ExceptionMapper extends ResponseEntityExceptionHandler {
         errorAttributes.put("message", ex.getMessage());
         errorAttributes.put("error", HttpStatus.NOT_FOUND.getReasonPhrase());
         return handleExceptionInternal(ex, errorAttributes, new HttpHeaders(), HttpStatus.NOT_FOUND, request);
+    }
+    @ExceptionHandler(value = NotYourPostException.class)
+    protected ResponseEntity<Object> handleException(NotYourPostException ex, WebRequest request) {
+        final Map<String, Object> errorAttributes = new DefaultErrorAttributes().getErrorAttributes(request, ErrorAttributeOptions.defaults());
+        errorAttributes.put("status", HttpStatus.UNAUTHORIZED.value());
+        errorAttributes.put("message", ex.getMessage());
+        errorAttributes.put("error", HttpStatus.UNAUTHORIZED.getReasonPhrase());
+        return handleExceptionInternal(ex, errorAttributes, new HttpHeaders(), HttpStatus.UNAUTHORIZED, request);
     }
 }

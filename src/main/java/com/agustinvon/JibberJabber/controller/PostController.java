@@ -1,6 +1,7 @@
 package com.agustinvon.JibberJabber.controller;
 
 import com.agustinvon.JibberJabber.model.Post;
+import com.agustinvon.JibberJabber.model.dto.FullPostDTO;
 import com.agustinvon.JibberJabber.model.dto.PostDTO;
 import com.agustinvon.JibberJabber.model.forms.PostForm;
 import com.agustinvon.JibberJabber.model.Reply;
@@ -35,39 +36,46 @@ public class PostController {
     }
 
     @PostMapping
-    public ResponseEntity<Post> addPost(@RequestBody PostForm postForm, Principal principal) {
-        Post postCreated = postService.createNewPost(postForm, principal.getName());
+    public ResponseEntity<PostDTO> addPost(@RequestBody PostForm postForm, Principal principal) {
+        PostDTO postCreated = postService.createNewPost(postForm, principal.getName());
         return ResponseEntity.ok(postCreated);
     }
 
     @GetMapping
-    public Page<Post> getMyPosts(@RequestParam Optional<Integer> page, Principal principal) {
+    public Page<PostDTO> getMyPosts(@RequestParam Optional<Integer> page, Principal principal) {
         return postService.listPostsFromUser(principal.getName(), page.orElse(0));
     }
 
     @GetMapping("/{username}")
     public Page<PostDTO> getPostsFromUser(@PathVariable String username, @RequestParam Optional<Integer> page) {
-        return postService.listPostsFromUser(username, page.orElse(0)).map(post -> new PostDTO(post.getContent(), post.getUsername(), post.getTimestamp()));
+        return postService.listPostsFromUser(username, page.orElse(0));
     }
 
+    @GetMapping("/all")
+    public Page<PostDTO> getAllPosts(@RequestParam Optional<Integer> page) {
+        return postService.listAllPosts(page.orElse(0));
+    }
+
+    /*
     @GetMapping("/follows")
     public List<Post> getPostsFromFollowing(@RequestHeader(value="Authorization") String authHeader , Principal principal) {
         FollowResponse response = restService.getFollows(followersUri, authHeader);
         return postService.getPostsFromUsers(response.getFollowList());
     }
+     */
 
     @GetMapping("/details/{postId}")
-    public Post getPostById(@PathVariable UUID postId) {
-        return postService.getPost(postId);
+    public FullPostDTO getPostById(@PathVariable UUID postId) {
+        return postService.getFullPost(postId);
     }
 
     @DeleteMapping("/{postId}")
-    public Post deletePost(@PathVariable UUID postId) {
-        return postService.deletePost(postId);
+    public FullPostDTO deletePost(@PathVariable UUID postId, Principal principal) {
+        return postService.deletePost(postId, principal.getName());
     }
 
     @PostMapping("/{postId}/reply")
-    public Reply replyPost(@PathVariable UUID postId, @RequestBody ReplyForm replyForm, Principal principal) {
+    public FullPostDTO replyPost(@PathVariable UUID postId, @RequestBody ReplyForm replyForm, Principal principal) {
         return postService.replyToPost(postId, replyForm, principal.getName());
     }
 }

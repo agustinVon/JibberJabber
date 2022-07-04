@@ -19,9 +19,6 @@ public class Post {
     private String content;
 
     @Column
-    private String username;
-
-    @Column
     private String userID;
 
     @Column
@@ -31,9 +28,8 @@ public class Post {
     private List<Reply> replies = new ArrayList<>();
 
 
-    public Post(String content, String username, String userID, LocalDateTime timestamp) {
+    public Post(String content, String userID, LocalDateTime timestamp) {
         this.content = content;
-        this.username = username;
         this.userID = userID;
         this.timestamp = timestamp;
     }
@@ -47,10 +43,6 @@ public class Post {
 
     public String getContent() {
         return content;
-    }
-
-    public String getUsername() {
-        return username;
     }
 
     public LocalDateTime getTimestamp() {
@@ -67,10 +59,6 @@ public class Post {
 
     public void setContent(String content) {
         this.content = content;
-    }
-
-    public void setUsername(String username) {
-        this.username = username;
     }
 
     public void setTimestamp(LocalDateTime timestamp) {

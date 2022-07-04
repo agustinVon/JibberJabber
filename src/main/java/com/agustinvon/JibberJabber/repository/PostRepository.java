@@ -12,7 +12,7 @@ import java.util.UUID;
 
 @Repository
 public interface PostRepository extends CrudRepository<Post, UUID> {
-    List<Post> findAll();
-    Page<Post> findByUsername(Pageable pageable,@Param("username") String username);
-    List<Post> findByUsername(@Param("username") String username);
+    Page<Post> findAll(Pageable pageable);
+    Page<Post> findByUserID(Pageable pageable,@Param("username") String username);
+    List<Post> findByUserID(@Param("username") String username);
 }
