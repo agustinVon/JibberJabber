@@ -5,13 +5,13 @@ import java.util.UUID;
 
 public class ReplyDTO {
     private UUID id;
-    private final String content;
+    private final String text;
     private final LocalDateTime localDateTime;
     private final UserDTO user;
 
     public ReplyDTO(UUID id, String content, LocalDateTime localDateTime, UserDTO user) {
         this.id = id;
-        this.content = content;
+        this.text = content;
         this.localDateTime = localDateTime;
         this.user = user;
     }
@@ -21,7 +21,7 @@ public class ReplyDTO {
     }
 
     public String getContent() {
-        return content;
+        return text;
     }
 
     public LocalDateTime getLocalDateTime() {

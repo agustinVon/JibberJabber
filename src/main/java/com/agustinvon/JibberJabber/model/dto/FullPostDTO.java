@@ -6,13 +6,13 @@ import java.util.UUID;
 
 public class FullPostDTO {
     private UUID id;
-    private final String content;
+    private final String text;
     private final LocalDateTime localDateTime;
     private final UserDTO user;
     private final List<ReplyDTO> thread;
 
     public FullPostDTO(UUID id, String content, LocalDateTime localDateTime, List<ReplyDTO> replies, UserDTO user) {
-        this.content = content;
+        this.text = content;
         this.localDateTime = localDateTime;
         this.id = id;
         this.user = user;
@@ -20,7 +20,7 @@ public class FullPostDTO {
     }
 
     public String getContent() {
-        return content;
+        return text;
     }
 
     public LocalDateTime getLocalDateTime() {
