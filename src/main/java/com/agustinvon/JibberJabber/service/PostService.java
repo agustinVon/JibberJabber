@@ -59,7 +59,7 @@ public class PostService {
 
     private PostDTO getDTOFromPost(Post post) {
         FullPostDTO fullPostDTO = getFullDTOFromPost(post);
-        return new PostDTO(fullPostDTO.getId(), fullPostDTO.getContent(), fullPostDTO.getLocalDateTime(), fullPostDTO.getUser());
+        return new PostDTO(fullPostDTO.getId(), fullPostDTO.getText(), fullPostDTO.getLocalDateTime(), fullPostDTO.getUser());
     }
 
     private Page<FullPostDTO> getFullDTOFromPostPage(Page<Post> posts) {
@@ -85,7 +85,7 @@ public class PostService {
 
     private Page<PostDTO> getDTOFromPostPage(Page<Post> posts) {
         Page<FullPostDTO> fullPostDTOS = getFullDTOFromPostPage(posts);
-        return fullPostDTOS.map(fullPostDTO -> new PostDTO(fullPostDTO.getId(), fullPostDTO.getContent(), fullPostDTO.getLocalDateTime(), fullPostDTO.getUser()));
+        return fullPostDTOS.map(fullPostDTO -> new PostDTO(fullPostDTO.getId(), fullPostDTO.getText(), fullPostDTO.getLocalDateTime(), fullPostDTO.getUser()));
     }
 
     private List<ReplyDTO> getReplyDTOFromReplyList(List<Reply> postReplies) {

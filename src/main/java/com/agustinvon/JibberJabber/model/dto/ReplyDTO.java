@@ -9,9 +9,9 @@ public class ReplyDTO {
     private final LocalDateTime localDateTime;
     private final UserDTO user;
 
-    public ReplyDTO(UUID id, String content, LocalDateTime localDateTime, UserDTO user) {
+    public ReplyDTO(UUID id, String text, LocalDateTime localDateTime, UserDTO user) {
         this.id = id;
-        this.text = content;
+        this.text = text;
         this.localDateTime = localDateTime;
         this.user = user;
     }
@@ -20,7 +20,7 @@ public class ReplyDTO {
         return id;
     }
 
-    public String getContent() {
+    public String getText() {
         return text;
     }
 

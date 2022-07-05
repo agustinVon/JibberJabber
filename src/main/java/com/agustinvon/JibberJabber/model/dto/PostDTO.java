@@ -9,14 +9,14 @@ public class PostDTO {
     private final LocalDateTime localDateTime;
     private final UserDTO user;
 
-    public PostDTO(UUID id, String content, LocalDateTime localDateTime, UserDTO user) {
-        this.text = content;
+    public PostDTO(UUID id, String text, LocalDateTime localDateTime, UserDTO user) {
+        this.text = text;
         this.localDateTime = localDateTime;
         this.id = id;
         this.user = user;
     }
 
-    public String getContent() {
+    public String getText() {
         return text;
     }
 
