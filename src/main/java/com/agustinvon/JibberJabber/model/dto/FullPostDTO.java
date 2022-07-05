@@ -11,12 +11,12 @@ public class FullPostDTO {
     private final UserDTO user;
     private final List<ReplyDTO> thread;
 
-    public FullPostDTO(UUID id, String text, LocalDateTime localDateTime, List<ReplyDTO> replies, UserDTO user) {
+    public FullPostDTO(UUID id, String text, LocalDateTime localDateTime, List<ReplyDTO> thread, UserDTO user) {
         this.text = text;
         this.localDateTime = localDateTime;
         this.id = id;
         this.user = user;
-        this.thread = replies;
+        this.thread = thread;
     }
 
     public String getText() {
@@ -35,7 +35,7 @@ public class FullPostDTO {
         return user;
     }
 
-    public List<ReplyDTO> getReplies() {
+    public List<ReplyDTO> getThread() {
         return thread;
     }
 }
