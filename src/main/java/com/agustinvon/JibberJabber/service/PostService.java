@@ -29,12 +29,16 @@ public class PostService {
     private ReplyRepository replyRepository;
     private RestService restService;
 
-    @Value("${client.secret}")
-    private String clientSecret;
     @Value("${keycloak.auth-server-url}")
     private String keycloakUrl;
     @Value("${keycloak.realm}")
     private String keycloakRealm;
+    @Value("${keycloak.resource}")
+    private String keycloakClient;
+    @Value("${admin.username}")
+    private String adminUsername;
+    @Value("${admin.password}")
+    private String adminPassword;
 
     @Autowired
     public PostService(PostRepository postRepository, ReplyRepository replyRepository, RestService restService) {
@@ -47,7 +51,7 @@ public class PostService {
     }
 
     private FullPostDTO getFullDTOFromPost(Post post) {
-        String token = restService.getAdminAccessToken(clientSecret, keycloakUrl + "/realms/master/protocol/openid-connect/token");
+        String token = restService.getAdminAccessToken(keycloakUrl + "/realms/" + keycloakRealm + "/protocol/openid-connect/token", adminUsername, adminPassword, keycloakClient);
         UserReply user = restService.getUserInformation(keycloakUrl + "/admin/realms/" + keycloakRealm + "/users/", token, post.getUserID());
         UserDTO userDTO = new UserDTO(post.getUserID(), user.getFirstName(), user.getUsername(), "placeholder");
         return new FullPostDTO(post.getId(), post.getContent(), post.getTimestamp(),getReplyDTOFromReplyList(post.getReplies()) , userDTO);
@@ -59,7 +63,7 @@ public class PostService {
     }
 
     private Page<FullPostDTO> getFullDTOFromPostPage(Page<Post> posts) {
-        String token = restService.getAdminAccessToken(clientSecret, keycloakUrl + "/realms/master/protocol/openid-connect/token");
+        String token = restService.getAdminAccessToken(keycloakUrl + "/realms/" + keycloakRealm + "/protocol/openid-connect/token", adminUsername, adminPassword, keycloakClient);
         UserReply[] replies = restService.getAllUsersInformation(keycloakUrl + "/admin/realms/JibberJabber/users", token);
         return posts.map(post -> {
             String userId = post.getUserID();
@@ -85,7 +89,7 @@ public class PostService {
     }
 
     private List<ReplyDTO> getReplyDTOFromReplyList(List<Reply> postReplies) {
-        String token = restService.getAdminAccessToken(clientSecret, keycloakUrl + "/realms/master/protocol/openid-connect/token");
+        String token = restService.getAdminAccessToken(keycloakUrl + "/realms/" + keycloakRealm + "/protocol/openid-connect/token", adminUsername, adminPassword, keycloakClient);
         UserReply[] userReplies = restService.getAllUsersInformation(keycloakUrl + "/admin/realms/JibberJabber/users", token);
         return postReplies.stream().map(postReply -> {
             String userId = postReply.getUserID();

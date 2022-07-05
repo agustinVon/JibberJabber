@@ -37,15 +37,16 @@ public class RestService {
         }
     }
 
-    public String getAdminAccessToken(String clientSecret, String url) {
+    public String getAdminAccessToken(String url, String adminUsername, String adminPassword, String clientId) {
         HttpHeaders headers = new HttpHeaders();
         headers.setAccept(Collections.singletonList(MediaType.APPLICATION_JSON));
         headers.setContentType(MediaType.APPLICATION_FORM_URLENCODED);
 
         MultiValueMap<String, String> map = new LinkedMultiValueMap<>();
-        map.add("client_id","admin-cli");
-        map.add("grant_type","client_credentials");
-        map.add("client_secret", clientSecret);
+        map.add("client_id", clientId);
+        map.add("username", adminUsername);
+        map.add("password", adminPassword);
+        map.add("grant_type","password");
 
         HttpEntity<MultiValueMap<String, String>> entity = new HttpEntity<>(map, headers);
 
@@ -62,13 +63,21 @@ public class RestService {
         }
     }
 
+    private String safeConcat(String a, String b) {
+        if (a.charAt(a.length() - 1) == '/') {
+            return a + b;
+        } else {
+            return a + "/" + b;
+        }
+    }
+
     public UserReply getUserInformation(String url, String adminToken, String userId) {
         HttpHeaders headers = new HttpHeaders();
         headers.setAccept(Collections.singletonList(MediaType.APPLICATION_JSON));
         headers.set("Authorization", "Bearer " + adminToken);
         HttpEntity request = new HttpEntity(headers);
         ResponseEntity<UserReply> response =
-                this.restTemplate.exchange(url + "/" + userId,
+                this.restTemplate.exchange(safeConcat(url, userId),
                         HttpMethod.GET, request,
                         UserReply.class);
         if (response.getStatusCode() == HttpStatus.OK) {

@@ -18,6 +18,7 @@ services:
       KEYCLOAK_PORT: 8080
       FOLLOWERS_HOST: followers-api
       FOLLOWERS_PORT: 8083
+      CLIENT_SECRET: hJO3PdTuXpXjGRl2tT1P6upztFfXrRb0
 
   followers-api:
     container_name: "followers-api"
